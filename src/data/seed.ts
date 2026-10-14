@@ -33,7 +33,7 @@ import type {
 const SEED = 20261013;
 
 const PROJECT_DEFS: Array<[string, string, string, string]> = [
-  ["Diriyah Gate — Zone A", "DG-A", "Foundations & substructure", "Diriyah Gate"],
+  ["Falcon tech Gate — Zone A", "DG-A", "Foundations & substructure", "Falcon tech Gate"],
   ["Wadi Hanifah Works", "WH-W", "Infrastructure & utilities", "Wadi Hanifah"],
   ["Cultural District", "CD-1", "Superstructure", "Al Bujairi"],
   ["North Infrastructure", "NI-2", "Roads & drainage", "Northern Corridor"],

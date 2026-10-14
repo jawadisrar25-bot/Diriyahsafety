@@ -140,7 +140,7 @@ function SidebarBody({ onClose }: { onClose: () => void }) {
         <BrandMark />
         <div className="min-w-0 flex-1">
           <div className="truncate font-display text-[13.5px] font-bold tracking-tight">
-            DIRIYAH <span className="font-medium text-copper-300">/ OHSS</span>
+            Falcon tech <span className="font-medium text-copper-300">/ OHSS</span>
           </div>
           <div className="truncate text-[9.5px] font-semibold uppercase tracking-[0.16em] text-sidebar-foreground/50">
             {locale === "ar" ? "منصة القيادة الرقمية" : "Digital Command Platform"}
