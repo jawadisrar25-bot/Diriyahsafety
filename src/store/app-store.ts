@@ -37,11 +37,27 @@ interface AppState {
 
 const baseRole = getRole(DEFAULT_ROLE);
 
+/** Screens pre-bookmarked in the Personal Workspace. */
+const DEFAULT_SAVED_PATHS: string[] = [
+  "/dashboard/executive",
+  "/dashboard/operations",
+  "/dashboard/my-tasks",
+  "/incidents/incident-register",
+  "/risk-permits/permit-registry",
+  "/occupational-health/surveillance-dashboard",
+  "/compliance-governance/compliance-register",
+  "/audits-inspections/audit-plan",
+  "/training-development/training-overview",
+  "/environmental-esg/environment-overview",
+  "/documents-forms/document-library",
+  "/reports-intelligence/executive-reporting",
+];
+
 export const useAppStore = create<AppState>((set, get) => ({
   data: SEED_DATASET,
   role: baseRole,
   theme: "light",
-  savedPaths: [],
+  savedPaths: DEFAULT_SAVED_PATHS,
   projectFilter: "all",
   userRecords: [],
   sidebarCollapsed: false,
