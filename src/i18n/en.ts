@@ -1,5 +1,5 @@
 export const en = {
-  "app.name": "Diriyah OHSS",
+  "app.name": "Falcon tech OHSS",
   "app.tagline": "Occupational Health, Safety & Security",
   "app.workspace": "Workspace",
 
