@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 195 22% 95%;
+    --foreground: 191 38% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 191 38% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 191 38% 13%;
+    --primary: 188 46% 14%;
+    --primary-foreground: 180 20% 96%;
+    --secondary: 195 20% 93%;
+    --secondary-foreground: 191 38% 13%;
+    --muted: 195 20% 93%;
+    --muted-foreground: 191 11% 42%;
+    --accent: 25 47% 55%;
+    --accent-foreground: 26 55% 97%;
+    --destructive: 3 57% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 195 16% 87%;
+    --input: 195 16% 84%;
+    --ring: 188 46% 14%;
+    --radius: 0.5rem;
+    --sidebar: 189 45% 12%;
+    --sidebar-foreground: 180 18% 82%;
+    --sidebar-muted: 188 32% 20%;
+    --sidebar-accent: 25 47% 55%;
+  }
+
+  .dark {
+    --background: 190 30% 8%;
+    --foreground: 180 18% 92%;
+    --card: 190 28% 10%;
+    --card-foreground: 180 18% 92%;
+    --popover: 190 28% 10%;
+    --popover-foreground: 180 18% 92%;
+    --primary: 25 47% 55%;
+    --primary-foreground: 189 45% 10%;
+    --secondary: 190 24% 15%;
+    --secondary-foreground: 180 18% 90%;
+    --muted: 190 24% 15%;
+    --muted-foreground: 190 11% 62%;
+    --accent: 25 47% 55%;
+    --accent-foreground: 189 45% 10%;
+    --destructive: 3 62% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 190 22% 17%;
+    --input: 190 22% 19%;
+    --ring: 25 47% 55%;
+    --sidebar: 189 40% 7%;
+    --sidebar-foreground: 180 16% 76%;
+    --sidebar-muted: 189 26% 13%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: hsl(25 47% 55% / 0.22);
+  }
+
+  [dir="rtl"] .flip-x {
+    transform: scaleX(-1);
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+  .skeleton {
+    @apply relative overflow-hidden rounded-md bg-muted;
+  }
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite];
+    background: linear-gradient(90deg, transparent, hsl(var(--card) / 0.7), transparent);
+  }
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+  .card-surface {
+    @apply rounded-xl border bg-card text-card-foreground shadow-card;
+  }
+  .grid-fade {
+    background-image: linear-gradient(hsl(var(--border)) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+}
+
+@layer components {
+  .recharts-cartesian-axis-tick text {
+    font-size: 11px;
+    fill: hsl(var(--muted-foreground));
+  }
+  .recharts-tooltip-wrapper {
+    outline: none;
+  }
+}
