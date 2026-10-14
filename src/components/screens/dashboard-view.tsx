@@ -59,20 +59,21 @@ export function DashboardView({ screen }: { screen: ScreenDef }) {
               </Panel>
             )}
           </div>
-
-          {rows.length > 0 && (
-            <Panel title={t("panel.recent")} bodyClassName="p-5">
-              <DataTable
-                screen={screen}
-                rows={rows.slice(0, 8)}
-                onOpen={() => navigate(screen.path + "/detail")}
-              />
-            </Panel>
-          )}
         </div>
 
         {hasCompanion && <Companion screen={screen} />}
       </div>
+
+      {rows.length > 0 && (
+        <Panel title={t("panel.recent")} bodyClassName="p-5">
+          <DataTable
+            screen={screen}
+            rows={rows.slice(0, 8)}
+            fill
+            onOpen={() => navigate(screen.path + "/detail")}
+          />
+        </Panel>
+      )}
     </div>
   );
 }

@@ -53,10 +53,13 @@ export function DataTable({
   screen,
   rows,
   onOpen,
+  fill = false,
 }: {
   screen: ScreenDef;
   rows: Row[];
   onOpen?: (row: Row) => void;
+  /** Fit the table to 100% of its container with wrapping instead of horizontal scrolling. */
+  fill?: boolean;
 }) {
   const { t } = useI18n();
   const role = useAppStore((s) => s.role);
@@ -109,7 +112,7 @@ export function DataTable({
         const raw = info.row.original;
         const val = cellValue(raw, key);
         if (!val) return <span className="text-muted-foreground">—</span>;
-        if (isStatusColumn(key)) return <StatusBadge value={val} />;
+        if (isStatusColumn(key)) return <StatusBadge value={val} className={fill ? "max-w-full break-all" : undefined} />;
         if (SCORE_KEYS.has(key)) {
           const n = Number(val);
           if (Number.isFinite(n)) return <ScoreBadge value={n} max={100} />;
@@ -126,7 +129,7 @@ export function DataTable({
       },
     }));
     return [...(baseCols.length && screen.entity !== "none" ? [sel] : []), ...defs];
-  }, [visible, baseCols, t, screen.entity]);
+  }, [visible, baseCols, t, screen.entity, fill]);
 
   const table = useReactTable({
     data: filtered,
@@ -246,22 +249,33 @@ export function DataTable({
       </div>
 
       <div className="overflow-hidden rounded-lg border bg-card">
-        <div className="overflow-x-auto">
-          <Table>
+        <div className={fill ? "overflow-hidden" : "overflow-x-auto"}>
+          <Table className={fill ? "table-fixed" : ""} scrollable={!fill}>
             <TableHeader>
               {table.getHeaderGroups().map((hg) => (
                 <TableRow key={hg.id} className="bg-muted/70 hover:bg-muted/70">
                   {hg.headers.map((h) => (
                     <TableHead
                       key={h.id}
-                      className="h-10 text-[11.5px] font-bold uppercase tracking-wide text-muted-foreground"
+                      className={cn(
+                        "h-10 text-[11.5px] font-bold uppercase tracking-wide text-muted-foreground",
+                        fill && "h-auto whitespace-normal break-words px-2 py-2.5 leading-tight"
+                      )}
                       onClick={h.column.getToggleSortingHandler()}
-                      style={{ cursor: h.column.getCanSort() ? "pointer" : "default" }}
+                      style={{
+                        cursor: h.column.getCanSort() ? "pointer" : "default",
+                        width: fill ? fillWidth(h.column.id) : undefined,
+                      }}
                     >
-                      <span className="inline-flex items-center gap-1">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1",
+                          fill && "block max-w-full"
+                        )}
+                      >
                         {flexRender(h.column.columnDef.header, h.getContext())}
-                        {h.column.getIsSorted() === "asc" && <ArrowUp className="h-3 w-3" />}
-                        {h.column.getIsSorted() === "desc" && <ArrowDown className="h-3 w-3" />}
+                        {h.column.getIsSorted() === "asc" && <ArrowUp className="h-3 w-3 shrink-0" />}
+                        {h.column.getIsSorted() === "desc" && <ArrowDown className="h-3 w-3 shrink-0" />}
                       </span>
                     </TableHead>
                   ))}
@@ -282,7 +296,10 @@ export function DataTable({
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-2.5 text-[13px]">
+                    <TableCell
+                      key={cell.id}
+                      className={cn("py-2.5 text-[13px]", fill && "px-2 py-2 break-words align-top")}
+                    >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -334,6 +351,20 @@ export function inferColumns(rows: Row[]): string[] {
   if (!rows.length) return [];
   const keys = Object.keys(rows[0]);
   return keys.filter((k) => !k.startsWith("_")).slice(0, 8);
+}
+
+/** Fixed widths for predictable narrow columns; every other column shares the remainder. */
+const FILL_WIDTHS: Record<string, number> = {
+  __sel: 44,
+  id: 88,
+  date: 92,
+  time: 68,
+  severity: 92,
+  status: 92,
+};
+
+function fillWidth(key: string): number | undefined {
+  return FILL_WIDTHS[key];
 }
 
 export function humanize(key: string): string {
